@@ -95,40 +95,37 @@ export default function createGame(){
                     player.x = 0
                 }
             },
-            w(player){
+            q(player){
 
-                if(player.y > 0){
+                if(player.y > 0 && player.x > 0){
                     player.y = player.y - 0.5
+                    player.x = player.x - 0.5
+                    
                 }
-                else{
-                    player.y = player.y + (state.screen.height - 0.5)
-                }
+                
             },
-            s(player){
+            e(player){
 
-                if(player.y + 0.5 < state.screen.height){
-                    player.y = player.y + 0.5
+                if(player.y >= 0 && player.x < 9 && player.y > 0){
+                    player.y = player.y - 0.5
+                    player.x = player.x + 0.5
                 }
-                else{
-                    player.y = 0
-                }
+                
             },
             a(player){
 
-                if(player.x > 0){
+                if(player.y >= 0 && player.x > 0 && player.y < 9){
+                    player.y = player.y + 0.5
                     player.x = player.x - 0.5
+                    
                 }
-                else{
-                    player.x = player.x + (state.screen.width - 0.5)
-                }
+                
             },
             d(player){
 
-                if(player.x + 0.5 < state.screen.width){
+                if(player.y >= 0 && player.x < 9 && player.y < 9 ){
+                    player.y = player.y + 0.5
                     player.x = player.x + 0.5
-                }
-                else{
-                    player.x = 0
                 }
             },
         }

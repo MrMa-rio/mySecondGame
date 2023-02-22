@@ -12,7 +12,7 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
     for (let r = 0;  r < 40 / 4; r++) {
         for(let c = 0; c < 40 / 4; c++){
             if((r + c) % 2 === 0) {
-                context.fillStyle = 'black';
+                context.fillStyle = '#0C5';
                 if(r < 10 && c < 10){
                     map.black[num++] = { x: r, y: c}
                 }
@@ -28,7 +28,7 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
    for(const player in game.state.players){
 
     let playerID = game.state.players[player]
-    context.fillStyle = 'blue'
+    context.fillStyle = '#ff3220'
     context.fillRect(playerID.x,playerID.y,1,1)
    }
     

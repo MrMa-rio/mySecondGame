@@ -5,8 +5,8 @@
     padding: 0px;
 }
 canvas{
-    width: 900px;
-    height: 900px;
+    width: 450px;
+    height: 450px;
 
     
     display: block;
@@ -19,4 +19,5 @@ canvas{
     image-rendering: crisp-edges;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
+    image-rendering: optimizeSpeed;
 }
