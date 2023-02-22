@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+*{
+    margin: 0px;
+    padding: 0px;
+}
+canvas{
+    width: 900px;
+    height: 900px;
+
+    
+    display: block;
+    margin: auto;
+    margin-top: 25px;
+    
+    
+    border: 7px solid #000;
+
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+}
