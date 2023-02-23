@@ -15,19 +15,19 @@ socket.on('connect', () => {
     const screen = document.getElementById('screen')
 
     renderScreen(screen,game,renderScreen,requestAnimationFrame)
-
+    
 })
 socket.on('state', (state) => {
 
     const playerID = socket.id
     game.setState(state)
-    console.log(state)
+    //console.log(state)
     
     KeyboardListener.registerPlayerID(playerID)
     KeyboardListener.subscribe(game.movePlayer)
     KeyboardListener.subscribe((command) =>{
-        socket.emit('move-Player', command)
 
+        socket.emit('move-Player', command)
     })
 })
 socket.on('remove-Player', (command) =>{
@@ -39,7 +39,9 @@ socket.on('move-Player', (command) => {
     const playerID = socket.id
     if(playerID !== command.playerID){ // Verificação para que o jogador não receba a propria notificação
         game.movePlayer(command)
+        
     }
+    
 })
 
 

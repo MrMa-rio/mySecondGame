@@ -2,24 +2,22 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
     
     const context = screen.getContext('2d')
     context.clearRect(0,0,game.state.screen.width,game.state.screen.height)
-    let map = {
-        black: {},
-        white: {},
-    }
+    
     let num = 0
 
     
-    for (let r = 0;  r < 40 / 4; r++) {
-        for(let c = 0; c < 40 / 4; c++){
+    for (let r = 0;  r < 25 ; r++) {
+        for(let c = 0; c < 25; c++){
             if((r + c) % 2 === 0) {
                 context.fillStyle = '#0C5';
-                if(r < 10 && c < 10){
-                    map.black[num++] = { x: r, y: c}
+                if(r < 25 && c < 25){
+                    
+                    game.map.black[num++] = { x: r, y: c}
                 }
             } 
             else{
                 context.fillStyle = 'white';
-                map.white[num++] = { x: r, y: c}
+                game.map.white[num++] = { x: r, y: c}
                 
             }
           context.fillRect(r, c, 1, 1);

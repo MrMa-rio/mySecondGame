@@ -22,14 +22,22 @@ sockets.on('connection', (socket) => {
     game.addPlayer({playerID: playerID})
 
     socket.emit('state', game.state)
+    //console.log(game.state)
     socket.on('disconnect', () =>{
         
         game.removePlayer({playerID: playerID})
         console.log(`Jogador ID:${playerID} desconectado`)
 
     })
+    socket.on('move-Player', (command) => {
+        command.playerID = playerID
+        command.type = 'move-Player'
+        game.movePlayer(command)
+    })
     console.log(`ID:${playerID} CONNECTED SERVIDOR`);
-    console.log(game.state)
+    //console.log(game.state)
+    
 })
+
 
 server.listen('3000');

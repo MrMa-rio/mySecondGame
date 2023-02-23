@@ -3,11 +3,19 @@ export default function createGame(){
     const state = {
         players: {},
         bots: {},
-        speed: {},
-        incolor: {},
-        freeze: {},
-        screen: {width: 10, height: 10}
+        speeds: {},
+        incolors: {},
+        freezes: {},
+        fruits: {},
+        screen: {width: 25, height: 25}
     }
+    let map = {
+        black: {},
+        white: {},
+        
+    }
+    
+    
 
     function addPlayer(command){
 
@@ -52,48 +60,58 @@ export default function createGame(){
 
     function movePlayer(command){
         notifyAll(command)
+        
 
         const acceptMoves = {
 
-            ArrowUp(player){
+            ArrowUp(player,validation){
                 
+                if(validation){
+                    if(player.y > 0){
+
+                        player.y = player.y - 1
+                    }
+                    else{
+                        player.y = player.y + (state.screen.height - 1)
+                    }
+                }
                 
-                if(player.y > 0){
-
-                    player.y = player.y - 0.5
-                    
-                }
-                else{
-
-                    player.y = player.y + (state.screen.height - 0.5)
-                }
             },
-            ArrowDown(player){
+            ArrowDown(player, validation){
 
-                if(player.y + 1 < state.screen.height){
-                    player.y = player.y + 0.5
+                if(validation){
+                    if(player.y + 1 < state.screen.height){
+                        player.y = player.y + 1
+                    }
+                    else{
+                        player.y = 1
+                    }
                 }
-                else{
-                    player.y = 0
-                }
+                
             },
-            ArrowLeft(player){
+            ArrowLeft(player, validation){
 
-                if(player.x > 0){
-                    player.x = player.x - 0.5
+                if(validation){
+                    if(player.x > 0){
+                        player.x = player.x - 1
+                    }
+                    else{
+                        player.x = player.x + (state.screen.width - 1)
+                    }
                 }
-                else{
-                    player.x = player.x + (state.screen.width - 0.5)
-                }
+                
             },
-            ArrowRight(player){
+            ArrowRight(player, validation){
+                if(validation){
 
-                if(player.x + 1 < state.screen.width){
-                    player.x = player.x + 0.5
+                    if(player.x + 1 < state.screen.width){
+                        player.x = player.x + 1
+                    }
+                    else{
+                        player.x = 1
+                    }
                 }
-                else{
-                    player.x = 0
-                }
+                
             },
             q(player){
 
@@ -106,7 +124,7 @@ export default function createGame(){
             },
             e(player){
 
-                if(player.y >= 0 && player.x < 9 && player.y > 0){
+                if(player.y >= 0 && player.x < state.screen.width - 1 && player.y > 0){
                     player.y = player.y - 0.5
                     player.x = player.x + 0.5
                 }
@@ -114,7 +132,7 @@ export default function createGame(){
             },
             a(player){
 
-                if(player.y >= 0 && player.x > 0 && player.y < 9){
+                if(player.y >= 0 && player.x > 0 && player.y < state.screen.height - 1){
                     player.y = player.y + 0.5
                     player.x = player.x - 0.5
                     
@@ -122,8 +140,8 @@ export default function createGame(){
                 
             },
             d(player){
-
-                if(player.y >= 0 && player.x < 9 && player.y < 9 ){
+                
+                if(player.y >= 0 && player.x < state.screen.width - 1 && player.y < state.screen.height - 1 ){
                     player.y = player.y + 0.5
                     player.x = player.x + 0.5
                 }
@@ -133,20 +151,47 @@ export default function createGame(){
         const playerID = command.playerID
         const keyPress = command.keyPress
         const moveFunction = acceptMoves[keyPress]
-
+        const validation = false
         if(player && moveFunction){
-            moveFunction(player)
-            //checkForFruitCollision(playerID)
+            moveFunction(player,validation)
+            checkPositionColor(playerID)
         }
+    }
+    function checkPositionColor(playerID){
+
+        for(const positionB in map.black){
+            const posBlack = map.black[positionB]
+            for(const playerID in state.players){
+                const player = state.players[playerID]
+                if(player.x === posBlack.x && player.y === posBlack.y){
+                    //console.log('area Black')
+                    return
+                }
+            }
+        }
+        for(const positionW in map.white){
+            const posWhite = map.white[positionW]
+            for(const playerID in state.players){
+                const player = state.players[playerID]
+                if(player.x === posWhite.x && player.y === posWhite.y){
+                    //console.log('area White')
+                    return
+                }
+            }
+        }
+        console.log(state.players)
     }
 
     return {
         state,
+        map,
         movePlayer,
         addPlayer,
         removePlayer,
         subscribe,
         setState,
         notifyAll,
+        
+        
     }
 }
