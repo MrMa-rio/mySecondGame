@@ -3,6 +3,7 @@ import http from 'http'
 import  Server  from 'socket.io'
 import createGame from './public/game.js'
 
+
 const app = express()
 const server = http.createServer(app)
 const sockets = new Server(server)
@@ -33,7 +34,12 @@ sockets.on('connection', (socket) => {
         command.playerID = playerID
         command.type = 'move-Player'
         game.movePlayer(command)
+        
+
     })
+    
+    game.start()
+    game.deleteAuto()
     console.log(`ID:${playerID} CONNECTED SERVIDOR`);
     //console.log(game.state)
     
