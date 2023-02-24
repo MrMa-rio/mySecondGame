@@ -1,6 +1,6 @@
 export default function createGame(){
     let observers = []
-    let validation = false
+    let isTrueIncolor = false
     const state = {
         players: {},
         bots: {},
@@ -17,6 +17,7 @@ export default function createGame(){
     }
     function start(){
         setInterval(addIncolor, 8000)
+        setInterval(addFruit,5000)
     }
     function deleteAuto(){
         setInterval(() => {
@@ -30,9 +31,6 @@ export default function createGame(){
             }
         },16000)
     }
-    
-    
-
     function addPlayer(command){
 
         const playerID = command.playerID
@@ -58,6 +56,34 @@ export default function createGame(){
         notifyAll({
             type: 'remove-Player',
             playerID: command.playerID
+        })
+    }
+    function addFruit(command){
+        if(Object.keys(state.fruits).length < 10){
+            const fruitID = command ? command.fruitID : Math.floor(Math.random() * 10000000)
+            const positionX = command ? command.positionX : Math.floor(Math.random() * state.screen.width)
+            const positionY = command ? command.positionY : Math.floor(Math.random() * state.screen.height)
+
+            state.fruits[fruitID] = {
+                x: positionX,
+                y: positionY,
+            }
+            notifyAll({ 
+                type: 'add-Fruit',
+                fruitID: fruitID,
+                positionX: positionX,
+                positionY: positionY
+            })
+        }
+    }
+    function removeFruit(command){
+
+        const fruitID = command.fruitID
+        delete state.fruits[fruitID]
+
+        notifyAll({ 
+            type:'remove-Fruit', 
+            fruitID:fruitID
         })
     }
     function addIncolor(command){
@@ -161,7 +187,7 @@ export default function createGame(){
                 
             },
             q(player){
-                if(!validation){
+                if(!isTrueIncolor){
                     if(player.y > 0 && player.x > 0){
                     player.y = player.y - 1
                     player.x = player.x - 1
@@ -184,7 +210,7 @@ export default function createGame(){
                 }
                 
             },
-            e(player){
+            e(player,validation){
                 if(!validation){
                     if(player.y >= 0 && player.x < state.screen.width - 1 && player.y > 0){
                         player.y = player.y - 1
@@ -223,7 +249,7 @@ export default function createGame(){
                 }
                 
             },
-            d(player){
+            d(player,validation){
                 
                 if(validation){
 
@@ -252,9 +278,10 @@ export default function createGame(){
         
         if(player && moveFunction){
             
-            moveFunction(player,validation)
+            moveFunction(player,isTrueIncolor)
             checkPositionColor(playerID)
             checkForIncolorColision(playerID)
+            checkForFruitCollision(playerID)
             
             //console.log(state.players)
         }
@@ -297,13 +324,31 @@ export default function createGame(){
                 if(indexPlayer === currentPlayer){
                     if(player.x === incolor.x && player.y === incolor.y){
                         removeIncolor({incolorID:indexIncolor})
-                        validation = true
+                        isTrueIncolor = true
                     }
+                }
+                if(isTrueIncolor){
+                    setTimeout(() => {
+                        isTrueIncolor = false
+                    },5000)
                 }
                 
             }
         }
 
+    }
+    function checkForFruitCollision(currentPlayer){
+
+        const playerID= state.players[currentPlayer]
+        for(const fruitID in state.fruits){
+            const fruit = state.fruits[fruitID]
+            
+            if(playerID.x === fruit.x && playerID.y === fruit.y){
+
+                console.log(`Colisao entre ${currentPlayer} e ${fruitID}`)
+                removeFruit({fruitID: fruitID})
+            }
+        }
     }
     return {
         state,
@@ -313,6 +358,8 @@ export default function createGame(){
         movePlayer,
         addPlayer,
         removePlayer,
+        addFruit,
+        removeFruit,
         addIncolor,
         removeIncolor,
         subscribe,

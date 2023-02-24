@@ -9,7 +9,7 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
     for (let r = 0;  r < 15 ; r++) {
         for(let c = 0; c < 15; c++){
             if((r + c) % 2 === 0) {
-                context.fillStyle = '#0C5';
+                context.fillStyle = '#5a1f1A';
                 context.fillRect(r, c, 1, 1);
                 if(r < 15 && c < 15){
                     
@@ -29,11 +29,11 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
         
         let player = game.state.players[players]
         if(players == playerID){
-            context.fillStyle = '#ff3220'
+            context.fillStyle = '#000'
             context.fillRect(player.x,player.y,1,1)
         }
         else{
-            context.fillStyle = '#CC0C'
+            context.fillStyle = '#62656C'
             context.fillRect(player.x,player.y,1,1)
 
         }
@@ -42,10 +42,14 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
     for(const indexIncolor in game.state.incolors){
 
         const incolor = game.state.incolors[indexIncolor]
-        context.fillStyle = 'blue'
+        context.fillStyle = '#ECDF44'
         context.fillRect(incolor.x, incolor.y, 1, 1)
     }
-    
+    for(const indexFruit in game.state.fruits){
+        const fruitID = game.state.fruits[indexFruit]
+        context.fillStyle = 'red'
+        context.fillRect(fruitID.x, fruitID.y, 1, 1)
+    }
     
     requestAnimationFrame(() => {
 

@@ -47,10 +47,15 @@ socket.on('remove-Player', (command) =>{
 })
 socket.on('add-Incolor', (command) => {
     game.addIncolor(command)
-    console.log(game.state.incolors)
 })
 socket.on('remove-Incolor', (command) =>{
     game.removeIncolor(command)
+})
+socket.on('add-Fruit', (command) => {
+    game.addFruit(command)
+})
+socket.on('remove-Fruit', (command) => {
+    game.removeFruit(command)
 })
 socket.on('move-Player', (command) => {
 
