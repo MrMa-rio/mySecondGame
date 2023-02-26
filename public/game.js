@@ -1,11 +1,10 @@
 export default function createGame(){
     let observers = []
     let isTrueIncolor = false
-    
     const state = {
         players: {}, //
         bots: {},
-        speeds: {},
+        speeds: {}, //
         incolors: {}, //
         freezes: {},
         fruits: {}, //
@@ -14,7 +13,6 @@ export default function createGame(){
     let map = {
         black: {},
         white: {},
-        
     }
     function start(){
         setInterval(addIncolor, 8000)
@@ -49,10 +47,12 @@ export default function createGame(){
         const positionX = 'positionX' in command ? command.positionX : Math.floor(Math.random() * state.screen.width)
         const positionY = 'positionY' in command ? command.positionY : Math.floor(Math.random() * state.screen.height)
         const velocity = 'velocity' in command ? command.velocity : 2500
+        const points = 'points' in command ? command.points : 0
         state.players[playerID] = {
             x: positionX,
             y: positionY,
-            velocity: velocity
+            velocity: velocity,
+            points: points
         
         }
         
@@ -61,7 +61,8 @@ export default function createGame(){
             playerID: playerID,
             positionX: positionX,
             positionY: positionY,
-            velocity: velocity
+            velocity: velocity,
+            points: points,
         })
     }
     function removePlayer(command){
@@ -94,10 +95,11 @@ export default function createGame(){
 
         const fruitID = command.fruitID
         delete state.fruits[fruitID]
-
+        
         notifyAll({ 
             type:'remove-Fruit', 
-            fruitID:fruitID
+            fruitID:fruitID,
+            
         })
     }
     function addIncolor(command){
@@ -163,11 +165,24 @@ export default function createGame(){
             })
         }
     }
-    function setChangeSpeed(playerID){
+    function setChangeSpeed(playerID,currentPlayer){
         if(playerID.velocity > 0){
             playerID.velocity = playerID.velocity - 500
         }
+        notifyAll({
+            type: 'change-Speed-Player',
+            playerID: currentPlayer,
+            velocity: playerID.velocity
+        })
+    }
+    function winPoints(currentPlayer,playerID){
+        console.log(`${currentPlayer} ganhou 1 PONTO!!`)
         
+        notifyAll({
+            type: 'win-Points',
+            playerID: currentPlayer,
+            points: state.players[currentPlayer].points,
+        })
     }
     function subscribe(observerFunction){
         observers.push(observerFunction)
@@ -398,7 +413,10 @@ export default function createGame(){
             if(playerID.x === fruit.x && playerID.y === fruit.y){
 
                 console.log(`Colisao entre ${currentPlayer} e ${fruitID}`)
+                playerID.points = playerID.points + 1
                 removeFruit({fruitID: fruitID})
+                winPoints(currentPlayer,playerID)
+                //console.log(playerID)
             }
         }
     }
@@ -409,7 +427,7 @@ export default function createGame(){
             const speed = state.speeds[speedID]
             if(playerID.x === speed.x && playerID.y === speed.y){
                 removeSpeed({speedID: speedID})
-                setChangeSpeed(playerID)
+                setChangeSpeed(playerID, currentPlayer)
             }
         }
     }

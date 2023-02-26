@@ -5,7 +5,6 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
     
     let num = 0
 
-    
     for (let r = 0;  r < 15 ; r++) {
         for(let c = 0; c < 15; c++){
             if((r + c) % 2 === 0) {

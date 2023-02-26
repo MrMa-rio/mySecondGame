@@ -6,9 +6,8 @@ import renderScreen from "./renderScreen.js"
 const socket = io()
 const game = createGame()
 const KeyboardListener = createKeyboardListener(document)
-
-
 KeyboardListener.subscribe(game.movePlayer)
+
 socket.on('connect', () => {
     const playerID = socket.id
     console.log(`Jogador conectado no Cliente com o ID:${playerID}`)
@@ -20,27 +19,20 @@ socket.on('connect', () => {
 
         KeyboardListener.unsubscribe(game.movePlayer);   
     })
-    console.log(game.map)
+    //console.log(game.map)
 })
 socket.on('state', (state) => {
 
     const playerID = socket.id
     game.setState(state)
-    //console.log(state)
-    
     KeyboardListener.registerPlayerID(playerID)
-    //KeyboardListener.subscribe(game.movePlayer)
     KeyboardListener.subscribe((command) =>{
 
         socket.emit('move-Player', command)
-        console.log(game.state.players[playerID])
     })
 })
 socket.on('add-Player', (command) => {
-
     game.addPlayer(command)
-    console.log(command)
-    
 })
 socket.on('remove-Player', (command) =>{
     game.removePlayer(command)
@@ -57,12 +49,14 @@ socket.on('add-Fruit', (command) => {
 })
 socket.on('remove-Fruit', (command) => {
     game.removeFruit(command)
+    //console.log(command)
 })
 socket.on('add-Speed', (command) => {
     game.addSpeed(command)
 })
 socket.on('remove-Speed', (command) =>{
     game.removeSpeed(command)
+    
 })
 socket.on('move-Player', (command) => {
 
@@ -71,8 +65,18 @@ socket.on('move-Player', (command) => {
         
         game.movePlayer(command)
     }
-    
-   
+   console.log(game.state.players)
+})
+socket.on('win-Points', (command) =>{
+    console.log(command)
+    const playerID = command.playerID
+    const points = command.points
+    game.state.players[playerID].points = points
+})
+socket.on('change-Speed-Player', (command) =>{
+    const playerID = command.playerID
+    const velocity = command.velocity
+    game.state.players[playerID].velocity = velocity
 })
 
 
