@@ -50,6 +50,11 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
         context.fillStyle = 'red'
         context.fillRect(fruitID.x, fruitID.y, 1, 1)
     }
+    for(const indexSpeed in game.state.speeds){
+        const speedID = game.state.speeds[indexSpeed]
+        context.fillStyle = 'purple'
+        context.fillRect(speedID.x, speedID.y, 1, 1)
+    }
     
     requestAnimationFrame(() => {
 

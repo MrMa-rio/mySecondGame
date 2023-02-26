@@ -1,13 +1,14 @@
 export default function createGame(){
     let observers = []
     let isTrueIncolor = false
+    
     const state = {
-        players: {},
+        players: {}, //
         bots: {},
         speeds: {},
-        incolors: {},
+        incolors: {}, //
         freezes: {},
-        fruits: {},
+        fruits: {}, //
         screen: {width: 15, height: 15}
     }
     let map = {
@@ -18,6 +19,7 @@ export default function createGame(){
     function start(){
         setInterval(addIncolor, 8000)
         setInterval(addFruit,5000)
+        setInterval(addSpeed, 3500)
     }
     function deleteAuto(){
         setInterval(() => {
@@ -30,16 +32,27 @@ export default function createGame(){
                 })
             }
         },16000)
+        setInterval(() =>{
+            for(const indexSpeed in state.speeds){
+                delete state.speeds[indexSpeed]
+
+                notifyAll({
+                    type: 'remove-Speed',
+                    speedID: indexSpeed
+                })
+            }
+        },40000)
     }
     function addPlayer(command){
 
         const playerID = command.playerID
         const positionX = 'positionX' in command ? command.positionX : Math.floor(Math.random() * state.screen.width)
         const positionY = 'positionY' in command ? command.positionY : Math.floor(Math.random() * state.screen.height)
-        
+        const velocity = 'velocity' in command ? command.velocity : 2500
         state.players[playerID] = {
             x: positionX,
             y: positionY,
+            velocity: velocity
         
         }
         
@@ -48,6 +61,7 @@ export default function createGame(){
             playerID: playerID,
             positionX: positionX,
             positionY: positionY,
+            velocity: velocity
         })
     }
     function removePlayer(command){
@@ -117,6 +131,44 @@ export default function createGame(){
             
         }
     }
+    function addSpeed(command){
+        if(Object.keys(state.speeds).length < 2){
+            const speedID = command ? command.speedID : Math.floor(Math.random() * 1000)
+            const positionX = command ? command.positionX : Math.floor(Math.random() * state.screen.width)
+            const positionY = command ? command.positionY : Math.floor(Math.random() * state.screen.height)
+
+            state.speeds[speedID] = {
+
+                speedID: speedID,
+                x: positionX,
+                y: positionY,
+            }
+
+            notifyAll({
+                type: 'add-Speed',
+                speedID: speedID,
+                positionX: positionX,
+                positionY: positionY
+            })
+        }
+    }
+    function removeSpeed(command){
+
+        if(command){
+            delete state.speeds[command.speedID]
+
+            notifyAll({
+                type: 'remove-Speed',
+                speedID: command.speedID
+            })
+        }
+    }
+    function setChangeSpeed(playerID){
+        if(playerID.velocity > 0){
+            playerID.velocity = playerID.velocity - 500
+        }
+        
+    }
     function subscribe(observerFunction){
         observers.push(observerFunction)
     }
@@ -130,7 +182,7 @@ export default function createGame(){
     }
     function setState(newState){
         Object.assign(state, newState)
-    }
+    }  
     function movePlayer(command){
         notifyAll(command)
         
@@ -273,17 +325,17 @@ export default function createGame(){
         const player = state.players[command.playerID]
         const playerID = command.playerID
         const keyPress = command.keyPress
-        
         const moveFunction = acceptMoves[keyPress]
         
         if(player && moveFunction){
             
-            moveFunction(player,isTrueIncolor)
-            checkPositionColor(playerID)
-            checkForIncolorColision(playerID)
-            checkForFruitCollision(playerID)
-            
-            //console.log(state.players)
+            setTimeout(() => {
+                moveFunction(player,isTrueIncolor)
+                checkPositionColor(playerID)
+                checkForIncolorColision(playerID)
+                checkForFruitCollision(playerID)
+                checkForSpeedCollision(playerID)
+            },player.velocity) 
         }
     }
     function checkPositionColor(currentPlayer){
@@ -350,6 +402,17 @@ export default function createGame(){
             }
         }
     }
+    function checkForSpeedCollision(currentPlayer){
+
+        const playerID = state.players[currentPlayer]
+        for(const speedID in state.speeds){
+            const speed = state.speeds[speedID]
+            if(playerID.x === speed.x && playerID.y === speed.y){
+                removeSpeed({speedID: speedID})
+                setChangeSpeed(playerID)
+            }
+        }
+    }
     return {
         state,
         map,
@@ -362,6 +425,8 @@ export default function createGame(){
         removeFruit,
         addIncolor,
         removeIncolor,
+        addSpeed,
+        removeSpeed,
         subscribe,
         unsubscribe,
         setState,
@@ -370,3 +435,4 @@ export default function createGame(){
         
     }
 }
+

@@ -39,6 +39,7 @@ socket.on('state', (state) => {
 socket.on('add-Player', (command) => {
 
     game.addPlayer(command)
+    console.log(command)
     
 })
 socket.on('remove-Player', (command) =>{
@@ -56,6 +57,12 @@ socket.on('add-Fruit', (command) => {
 })
 socket.on('remove-Fruit', (command) => {
     game.removeFruit(command)
+})
+socket.on('add-Speed', (command) => {
+    game.addSpeed(command)
+})
+socket.on('remove-Speed', (command) =>{
+    game.removeSpeed(command)
 })
 socket.on('move-Player', (command) => {
 
