@@ -16,8 +16,10 @@ export default function createGame(){
     }
     function start(){
         setInterval(addIncolor, 8000)
-        setInterval(addFruit,5000)
+        setInterval(addFruit,1500)
         setInterval(addSpeed, 3500)
+        setInterval(addBot,0)
+        setInterval(moveBot,1000)
     }
     function deleteAuto(){
         setInterval(() => {
@@ -73,8 +75,35 @@ export default function createGame(){
             playerID: command.playerID
         })
     }
+    function addBot(command){
+        if(Object.keys(state.bots).length < 1){
+
+            const botID = command ? command.botID : Math.floor(Math.random() * 10000)
+            const positionX = command ? command.positionX : Math.floor(Math.random() * state.screen.width)
+            const positionY = command ? command.positionY : Math.floor(Math.random() * state.screen.height)
+            const velocity = command ? command.velocity : 1000
+            const level = command ? command.level : 1
+            
+            state.bots[botID] = {
+                x: positionX,
+                y: positionY,
+                velocity: velocity,
+                level: level,
+                
+            }
+            notifyAll({
+                type: 'add-Bot',
+                botID: botID,
+                positionX: positionX,
+                positionY: positionY,
+                velocity: velocity,
+                level: level,
+                
+            })
+        }
+    }
     function addFruit(command){
-        if(Object.keys(state.fruits).length < 10){
+        if(Object.keys(state.fruits).length < 2){
             const fruitID = command ? command.fruitID : Math.floor(Math.random() * 10000000)
             const positionX = command ? command.positionX : Math.floor(Math.random() * state.screen.width)
             const positionY = command ? command.positionY : Math.floor(Math.random() * state.screen.height)
@@ -353,6 +382,45 @@ export default function createGame(){
             },player.velocity) 
         }
     }
+    function moveBot(){
+        for(const indexBot in state.bots){
+            
+            for(const indexFruit in state.fruits){
+                const botID = state.bots[indexBot]
+                const fruitID = state.fruits[indexFruit]
+                
+                //TODO:
+                /*
+                Voce ira ter que criar um bot onde ele siga o jogador
+                e quando as coordenadas forem as mesmas, o jogador irá
+                perder toda pontuação atual
+                Para funcionar voce ira ter que assimalar as coordenadas
+                do bot com a do player fazendo com que o bot siga o player
+                até alcançá-lo.
+                Tente multiplicar o perimetro quadrado do bot com a do player
+                
+                */
+                
+
+                notifyAll({
+                    type: 'move-Bot',
+                    botID: indexBot,
+                    positionX: botID.x,
+                    positionY: botID.y,
+                    
+                    
+                })
+                
+            }
+            
+            
+                
+            
+            
+            
+            
+        }
+    }
     function checkPositionColor(currentPlayer){
 
         for(const positionB in map.black){
@@ -439,6 +507,8 @@ export default function createGame(){
         movePlayer,
         addPlayer,
         removePlayer,
+        addBot,
+        moveBot,
         addFruit,
         removeFruit,
         addIncolor,

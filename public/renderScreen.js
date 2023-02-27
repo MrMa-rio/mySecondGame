@@ -38,6 +38,13 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
         }
         
     }
+    for(const bots in game.state.bots){
+
+        const bot = game.state.bots[bots]
+
+        context.fillStyle = 'blue'
+        context.fillRect(bot.x, bot.y, 1, 1)
+    }
     for(const indexIncolor in game.state.incolors){
 
         const incolor = game.state.incolors[indexIncolor]

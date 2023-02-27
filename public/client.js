@@ -38,6 +38,10 @@ socket.on('remove-Player', (command) =>{
     game.removePlayer(command)
     console.log(`REMOVENDO ${command.playerID} POR DESCONEXÂO`)
 })
+socket.on('add-Bot', (command) =>{
+    game.addBot(command)
+    console.log(game.state.bots)
+})
 socket.on('add-Incolor', (command) => {
     game.addIncolor(command)
 })
@@ -66,6 +70,12 @@ socket.on('move-Player', (command) => {
         game.movePlayer(command)
     }
    console.log(game.state.players)
+})
+socket.on('move-Bot', (command) =>{
+    console.log(command)
+    const botID = game.state.bots[command.botID]
+    botID.x = command.positionX
+    botID.y = command.positionY
 })
 socket.on('win-Points', (command) =>{
     console.log(command)
