@@ -43,5 +43,6 @@ sockets.on('connection', (socket) => {
 })
     game.start()
     
+    
     game.deleteAuto()
 server.listen('3000');

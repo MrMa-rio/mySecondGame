@@ -1,3 +1,5 @@
+
+
 export default function createGame(){
     let observers = []
     let isTrueIncolor = false
@@ -18,7 +20,7 @@ export default function createGame(){
         setInterval(addIncolor, 8000)
         setInterval(addFruit,1500)
         setInterval(addSpeed, 3500)
-        setInterval(addBot,0)
+        setTimeout(addBot,2000)
         setInterval(moveBot,1000)
     }
     function deleteAuto(){
@@ -48,7 +50,7 @@ export default function createGame(){
         const playerID = command.playerID
         const positionX = 'positionX' in command ? command.positionX : Math.floor(Math.random() * state.screen.width)
         const positionY = 'positionY' in command ? command.positionY : Math.floor(Math.random() * state.screen.height)
-        const velocity = 'velocity' in command ? command.velocity : 2500
+        const velocity = 'velocity' in command ? command.velocity : 250
         const points = 'points' in command ? command.points : 0
         state.players[playerID] = {
             x: positionX,
@@ -79,17 +81,17 @@ export default function createGame(){
         if(Object.keys(state.bots).length < 1){
 
             const botID = command ? command.botID : Math.floor(Math.random() * 10000)
-            const positionX = command ? command.positionX : Math.floor(Math.random() * state.screen.width)
-            const positionY = command ? command.positionY : Math.floor(Math.random() * state.screen.height)
-            const velocity = command ? command.velocity : 1000
+            const positionX = command ? command.positionX : 13//Math.floor(Math.random() * state.screen.width)
+            const positionY = command ? command.positionY : 13//Math.floor(Math.random() * state.screen.height)
+            const velocity = command ? command.velocity : 2000
             const level = command ? command.level : 1
-            
+            const distancePlayer = command ? command.distancePlayer : state.screen.width + state.screen.height
             state.bots[botID] = {
                 x: positionX,
                 y: positionY,
                 velocity: velocity,
                 level: level,
-                
+                distancePlayer: distancePlayer,
             }
             notifyAll({
                 type: 'add-Bot',
@@ -98,12 +100,13 @@ export default function createGame(){
                 positionY: positionY,
                 velocity: velocity,
                 level: level,
+                distancePlayer: distancePlayer,
                 
             })
         }
     }
     function addFruit(command){
-        if(Object.keys(state.fruits).length < 2){
+        if(Object.keys(state.fruits).length < 3){
             const fruitID = command ? command.fruitID : Math.floor(Math.random() * 10000000)
             const positionX = command ? command.positionX : Math.floor(Math.random() * state.screen.width)
             const positionY = command ? command.positionY : Math.floor(Math.random() * state.screen.height)
@@ -383,42 +386,66 @@ export default function createGame(){
         }
     }
     function moveBot(){
+        let distancePlayer
+        let distanceX
+        let distanceY
+        
         for(const indexBot in state.bots){
+    
+            const botID = state.bots[indexBot]
             
-            for(const indexFruit in state.fruits){
-                const botID = state.bots[indexBot]
-                const fruitID = state.fruits[indexFruit]
+            for(const indexPlayer in state.players){
                 
-                //TODO:
-                /*
-                Voce ira ter que criar um bot onde ele siga o jogador
-                e quando as coordenadas forem as mesmas, o jogador irá
-                perder toda pontuação atual
-                Para funcionar voce ira ter que assimalar as coordenadas
-                do bot com a do player fazendo com que o bot siga o player
-                até alcançá-lo.
-                Tente multiplicar o perimetro quadrado do bot com a do player
+                const playerID = state.players[indexPlayer]
+                if(botID.x == playerID.x && botID.y == playerID.y){
+                    //removeFruit({fruitID:indexFruit})
+                    //botID.distancePlayer = state.screen.width + state.screen.height
+                    //return
+                }
+                distancePlayer = (botID.x - playerID.x) + (botID.y - playerID.y)
                 
-                */
-                
-
+                if(distancePlayer < 0){
+                    distancePlayer = distancePlayer - distancePlayer - distancePlayer
+                }
+                if(distancePlayer < botID.distancePlayer){
+                    
+                    botID.distancePlayer = distancePlayer
+                    distanceX = (botID.x - playerID.x)
+                    distanceY = (botID.y - playerID.y)
+                    distancePlayer = botID.distancePlayer
+                }
+                if(distancePlayer > botID.distancePlayer){
+                    
+                    botID.distancePlayer = distancePlayer
+                    distanceX = (playerID.x - botID.x)
+                    distanceY = (playerID.y - botID.y)
+                    distancePlayer = botID.distancePlayer
+                }
+                if(distancePlayer == botID.distancePlayer){
+                        
+                    if(botID.x < playerID.x){
+                        botID.x++
+                    }
+                    if(botID.y < playerID.y){
+                        botID.y++
+                    }
+                    if(botID.x > playerID.x){
+                        botID.x--
+                    }
+                    if(botID.y > playerID.y){
+                        botID.y--
+                    }
+                    distancePlayer = botID.distancePlayer
+                }
                 notifyAll({
                     type: 'move-Bot',
                     botID: indexBot,
                     positionX: botID.x,
                     positionY: botID.y,
-                    
+                    distancePlayer: botID.distancePlayer
                     
                 })
-                
             }
-            
-            
-                
-            
-            
-            
-            
         }
     }
     function checkPositionColor(currentPlayer){
@@ -519,8 +546,6 @@ export default function createGame(){
         unsubscribe,
         setState,
         notifyAll,
-        
-        
     }
 }
-
+            

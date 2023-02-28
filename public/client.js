@@ -50,6 +50,7 @@ socket.on('remove-Incolor', (command) =>{
 })
 socket.on('add-Fruit', (command) => {
     game.addFruit(command)
+    
 })
 socket.on('remove-Fruit', (command) => {
     game.removeFruit(command)
@@ -72,10 +73,12 @@ socket.on('move-Player', (command) => {
    console.log(game.state.players)
 })
 socket.on('move-Bot', (command) =>{
-    console.log(command)
+    
     const botID = game.state.bots[command.botID]
     botID.x = command.positionX
     botID.y = command.positionY
+    botID.distancePlayer = command.distancePlayer
+    console.log(command)
 })
 socket.on('win-Points', (command) =>{
     console.log(command)
