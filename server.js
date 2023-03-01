@@ -21,11 +21,13 @@ sockets.on('connection', (socket) => {
     const playerID = socket.id
 
     game.addPlayer({playerID: playerID})
+    
     socket.emit('state', game.state)
     //console.log(game.state)
     socket.on('disconnect', () =>{
         
         game.removePlayer({playerID: playerID})
+        game.removeBot()
         console.log(`Jogador ID:${playerID} desconectado`)
         
 
@@ -42,7 +44,5 @@ sockets.on('connection', (socket) => {
     //console.log(game.state)
 })
     game.start()
-    
-    
     game.deleteAuto()
 server.listen('3000');

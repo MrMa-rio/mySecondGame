@@ -91,5 +91,15 @@ socket.on('change-Speed-Player', (command) =>{
     const velocity = command.velocity
     game.state.players[playerID].velocity = velocity
 })
+socket.on('bot-player-colision', ((command) =>{
+    console.log(command)
+    game.state.players[command.playerID] = {
+        x: command.x,
+        y: command.y, 
+        points: command.points,
+        velocity: command.velocity,
+        
+    }
+}))
 
 
