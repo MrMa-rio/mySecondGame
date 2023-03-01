@@ -40,7 +40,7 @@ socket.on('remove-Player', (command) =>{
 })
 socket.on('add-Bot', (command) =>{
     game.addBot(command)
-    console.log(game.state.bots)
+    
 })
 socket.on('add-Incolor', (command) => {
     game.addIncolor(command)
@@ -78,16 +78,12 @@ socket.on('move-Bot', (command) =>{
     botID.x = command.positionX
     botID.y = command.positionY
     botID.distancePlayer = command.distancePlayer
-    //console.log(command)
 })
 socket.on('win-Points', (command) =>{
     //console.log(command)
     const playerID = command.playerID
     const points = command.points
     game.state.players[playerID].points = points
-    if(points % 10 == 0){
-        game.setLevelBot()
-    }
 })
 socket.on('change-Speed-Player', (command) =>{
     const playerID = command.playerID

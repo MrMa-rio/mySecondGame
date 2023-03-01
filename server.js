@@ -39,9 +39,7 @@ sockets.on('connection', (socket) => {
         
 
     })
-
     console.log(`ID:${playerID} CONNECTED SERVIDOR`);
-    //console.log(game.state)
 })
     game.start()
     game.deleteAuto()
