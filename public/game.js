@@ -5,8 +5,8 @@ export default function createGame(){
     let isTrueIncolor = false
     const state = {
         players: {}, //
-        bots: {},  //
-        speeds: {}, //
+        bots: {}, //
+        speedsPlayer: {}, //
         incolors: {}, //
         freezes: {},
         fruits: {}, //
@@ -18,9 +18,9 @@ export default function createGame(){
     }
     function start(){
         setInterval(addIncolor, 8000)
-        setInterval(addFruit,1500)
+        setInterval(addFruit,500)
         setInterval(addSpeed, 3500)
-        setInterval(moveBot,1500)
+        setInterval(moveBot,2000)
     }
     function deleteAuto(){
         setInterval(() => {
@@ -50,7 +50,7 @@ export default function createGame(){
             const playerID = command.playerID
             const positionX = 'positionX' in command ? command.positionX : Math.floor(Math.random() * state.screen.width)
             const positionY = 'positionY' in command ? command.positionY : Math.floor(Math.random() * state.screen.height)
-            const velocity = 'velocity' in command ? command.velocity : 1000
+            const velocity = 'velocity' in command ? command.velocity : 500
             const points = 'points' in command ? command.points : 0
             state.players[playerID] = {
                 x: positionX,
@@ -80,7 +80,7 @@ export default function createGame(){
         })
     }
     function addBot(command){
-        if(Object.keys(state.bots).length < 10){
+        if(Object.keys(state.bots).length < 1){
             
             const botID = command ? command.botID : Math.floor(Math.random() * 10000)
             const positionX = command ? command.positionX : Math.floor(Math.random() * state.screen.width)
@@ -97,6 +97,7 @@ export default function createGame(){
                 level: level,
                 distancePlayer: distancePlayer,
             }
+            
             notifyAll({
                 type: 'add-Bot',
                 botID: botID,
@@ -123,8 +124,23 @@ export default function createGame(){
         
         
     }
+    function setLevelBot(){
+        for(const indexBot in state.bots){
+            const level = state.bots[indexBot].level++
+            const velocity = state.bots[indexBot].velocity - 500 
+
+            notifyAll({
+            type: 'set-level-bot',
+            level: level,
+            velocity: velocity,
+        })
+        }
+        
+
+        console.log(state.bots)
+    }
     function addFruit(command){
-        if(Object.keys(state.fruits).length < 3){
+        if(Object.keys(state.fruits).length < 30){
             const fruitID = command ? command.fruitID : Math.floor(Math.random() * 10000000)
             const positionX = command ? command.positionX : Math.floor(Math.random() * state.screen.width)
             const positionY = command ? command.positionY : Math.floor(Math.random() * state.screen.height)
@@ -184,12 +200,12 @@ export default function createGame(){
         }
     }
     function addSpeed(command){
-        if(Object.keys(state.speeds).length < 2){
+        if(Object.keys(state.speedsPlayer).length < 2){
             const speedID = command ? command.speedID : Math.floor(Math.random() * 1000)
             const positionX = command ? command.positionX : Math.floor(Math.random() * state.screen.width)
             const positionY = command ? command.positionY : Math.floor(Math.random() * state.screen.height)
 
-            state.speeds[speedID] = {
+            state.speedsPlayer[speedID] = {
 
                 speedID: speedID,
                 x: positionX,
@@ -207,7 +223,7 @@ export default function createGame(){
     function removeSpeed(command){
 
         if(command){
-            delete state.speeds[command.speedID]
+            delete state.speedsPlayer[command.speedID]
 
             notifyAll({
                 type: 'remove-Speed',
@@ -525,7 +541,7 @@ export default function createGame(){
     }
     function checkForFruitCollision(currentPlayer){
 
-        const playerID= state.players[currentPlayer]
+        const playerID = state.players[currentPlayer]
         for(const fruitID in state.fruits){
             const fruit = state.fruits[fruitID]
             
@@ -553,8 +569,8 @@ export default function createGame(){
 
         if(botID.x == playerID.x && botID.y == playerID.y){
 
-            const velocity = playerID.velocity + 500 <= 2500 ? playerID.velocity + 500 : playerID.velocity
-            const points = playerID.points - 1 >= 0 ? playerID.points - 1 : playerID.points
+            const velocity = 2500
+            const points = 0
             const x = Math.floor(Math.random() * state.screen.width)
             const y = Math.floor(Math.random() * state.screen.height)
 
@@ -590,6 +606,7 @@ export default function createGame(){
         addBot,
         removeBot,
         moveBot,
+        setLevelBot,
         addFruit,
         removeFruit,
         addIncolor,

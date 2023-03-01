@@ -78,13 +78,16 @@ socket.on('move-Bot', (command) =>{
     botID.x = command.positionX
     botID.y = command.positionY
     botID.distancePlayer = command.distancePlayer
-    console.log(command)
+    //console.log(command)
 })
 socket.on('win-Points', (command) =>{
-    console.log(command)
+    //console.log(command)
     const playerID = command.playerID
     const points = command.points
     game.state.players[playerID].points = points
+    if(points % 10 == 0){
+        game.setLevelBot()
+    }
 })
 socket.on('change-Speed-Player', (command) =>{
     const playerID = command.playerID
@@ -100,6 +103,7 @@ socket.on('bot-player-colision', ((command) =>{
         velocity: command.velocity,
         
     }
+
 }))
 
 
