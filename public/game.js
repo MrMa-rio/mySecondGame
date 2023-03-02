@@ -50,7 +50,7 @@ export default function createGame(){
             const playerID = command.playerID
             const positionX = 'positionX' in command ? command.positionX : Math.floor(Math.random() * state.screen.width)
             const positionY = 'positionY' in command ? command.positionY : Math.floor(Math.random() * state.screen.height)
-            const velocity = 'velocity' in command ? command.velocity : 500
+            const velocity = 'velocity' in command ? command.velocity : 2500
             const points = 'points' in command ? command.points : 0
             state.players[playerID] = {
                 x: positionX,
@@ -536,8 +536,8 @@ export default function createGame(){
     function checkForSpeedCollision(currentPlayer){
 
         const playerID = state.players[currentPlayer]
-        for(const speedID in state.speeds){
-            const speed = state.speeds[speedID]
+        for(const speedID in state.speedsPlayer){
+            const speed = state.speedsPlayer[speedID]
             if(playerID.x === speed.x && playerID.y === speed.y){
                 removeSpeed({speedID: speedID})
                 setChangeSpeed(playerID, currentPlayer)

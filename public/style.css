@@ -5,15 +5,17 @@
     padding: 0px;
 }
 body{
-    background-color: hsl(138, 49%, 36%);
+    
+    background-color:  #24272B;
     color: #9e1559b9;
 }
 canvas{
     width: 500px;
     height: 500px;
-    background-color: #0c182b;
+    background-color: #f0f0f0;
     
     display: block;
+    
     margin: auto;
     margin-top: 25px;
     
@@ -21,8 +23,36 @@ canvas{
     border: 7px solid #000000;
     border-radius: 20px;
 
+    box-shadow: 0px 0px 25px #000;
+
     image-rendering: crisp-edges;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     
+}
+#tutorials{
+    width: 330px;
+    height: 480px;
+    position: absolute;
+    
+    top: 5%;
+    left: 10%;
+
+    border-radius: 25px;
+    box-shadow: 0px 0px 20px #000;
+    background-color: #4A525A;
+}
+#secondScreen{
+    display: block;
+    position: relative;
+    left: 50%;
+    top: -40vh ;
+    transform: translateX( 25vw );
+
+    width: 360px;
+    height: 225px;
+    
+    border-radius: 25px;
+    box-shadow: 0px 0px 20px #000;
+    background-color: #4A525A;
 }

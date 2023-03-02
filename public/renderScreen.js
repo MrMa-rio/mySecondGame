@@ -8,7 +8,7 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
     for (let r = 0;  r < 15 ; r++) {
         for(let c = 0; c < 15; c++){
             if((r + c) % 2 === 0) {
-                context.fillStyle = '#3B89F6';
+                context.fillStyle = '#4A525A';
                 context.fillRect(r, c, 1, 1);
                 if(r < 15 && c < 15){
                     
@@ -28,7 +28,7 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
         
         let player = game.state.players[players]
         if(players == playerID){
-            context.fillStyle = '#CCa'
+            context.fillStyle = '#000'
             context.fillRect(player.x,player.y,1,1)
         }
         else{
@@ -42,23 +42,23 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
 
         const bot = game.state.bots[bots]
 
-        context.fillStyle = '#ff0000dc'
+        context.fillStyle = '#621708'
         context.fillRect(bot.x, bot.y, 1, 1)
     }
     for(const indexIncolor in game.state.incolors){
 
         const incolor = game.state.incolors[indexIncolor]
-        context.fillStyle = '#158b11b9'
+        context.fillStyle = '#0B3C49'
         context.fillRect(incolor.x, incolor.y, 1, 1)
     }
     for(const indexFruit in game.state.fruits){
         const fruitID = game.state.fruits[indexFruit]
-        context.fillStyle = '#FDD000'
+        context.fillStyle = '#3E4C65'
         context.fillRect(fruitID.x, fruitID.y, 1, 1)
     }
     for(const indexSpeed in game.state.speedsPlayer){
         const speedID = game.state.speedsPlayer[indexSpeed]
-        context.fillStyle = '#9e1559b9'
+        context.fillStyle = '#3B3561'
         context.fillRect(speedID.x, speedID.y, 1, 1)
     }
     
