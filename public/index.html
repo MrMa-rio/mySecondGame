@@ -4,15 +4,45 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     
     <title>M4R10</title>
 </head>
 <body>
-    <div id="tutorials"></div>
+    <div id="tutorials">
+        <h1>TUTORIALS</h1>
+        <p>Alcance a maior quantidade de pontos!!</p>
+        <p>Para vencer, você irá ter que acumular <strong>PONTOS</strong> e não ser pego pelo bot.</p>
+        <p>Para não ser pego, temos o "<strong>SPEED</strong>", ele irá te dar 0.5s à menos de delay.</p>
+        <p>Para percorrer todo o perimetro do jogo, você só irá caminhar entre as diágonais, podendo ficar somente nos quadrados brancos ou cinzas.</p>
+        <p>O "<strong>POWER</strong>" ele anula a regra dita anteriormente, tendo 8s para andar livremente no jogo, podendo ir para todas as direções</p>
+        <p>Utilize as teclas: <strong>Q, E, A, D</strong> para caminhar entre as diagonais. Quando o "<strong>POWER</strong> é ativado as teclas passam a ser: <strong>W, A, S, D</strong>, podendo também utilizar as setas: Up, Down, Left, Right.</p>
+        
+    </div>
+    <div id="subtitle">
+        <h1>SUBTITLE</h1>
+        <hr>
+        <h2>Player: <img class="pixels" src="./Pixels/pixel_player.png" alt="Player"></h2> 
+        
+        <h2>Bot: <img class="pixels" src="Pixels/pixel_bot.png" alt="Bot" srcset=""> </h2>
+        
+        <h2>Speed: <img class="pixels" src="Pixels/pixel_3B3561.png" alt="Speed" srcset=""></h2>
+        
+        <h2>Fruits: <img class="pixels" src="Pixels/pixel_3E4C65.png" alt="Fruits" srcset=""> </h2>
+       
+        <h2>Power: <img class="pixels" src="Pixels/pixel_0B3C49.png" alt="Power" srcset=""></h2>
+    </div>
     <canvas width="15" height="15" id="screen" ></canvas>
     
-    <div id="secondScreen"></div>
+    <div id="secondScreen">
+        
+    </div>
+    <div id="thirdScreen" > 
+        <h1> POWER DISABLE</h1>
+         </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="client.js" type="module"></script>
 </body>

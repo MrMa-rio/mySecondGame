@@ -62,6 +62,7 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
         context.fillRect(speedID.x, speedID.y, 1, 1)
     }
     
+    game.secondScreen()
     requestAnimationFrame(() => {
 
         renderScreen(screen,game,renderScreen,requestAnimationFrame,playerID)

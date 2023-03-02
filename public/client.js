@@ -3,10 +3,12 @@ import createKeyboardListener from "./KeyboardListener.js"
 import renderScreen from "./renderScreen.js"
 
 
+
 const socket = io()
 const game = createGame()
 const KeyboardListener = createKeyboardListener(document)
 KeyboardListener.subscribe(game.movePlayer)
+game.tutorials(document)
 
 socket.on('connect', () => {
     const playerID = socket.id
@@ -33,6 +35,7 @@ socket.on('state', (state) => {
 })
 socket.on('add-Player', (command) => {
     game.addPlayer(command)
+    game.secondScreen()
 })
 socket.on('remove-Player', (command) =>{
     game.removePlayer(command)
@@ -101,5 +104,19 @@ socket.on('bot-player-colision', ((command) =>{
     }
 
 }))
+socket.on('incolor-colision', () =>{
+    let sec = 7
+    setInterval(() =>{
+
+        game.time(sec)
+        sec--
+        if(sec < 0){
+            clearInterval()
+        }
+    },1000)
+    
+    
+    
+})
 
 

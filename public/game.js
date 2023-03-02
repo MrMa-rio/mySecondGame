@@ -16,6 +16,65 @@ export default function createGame(){
         black: {},
         white: {},
     }
+    function tutorials(){
+        const screen = document.getElementById('tutorials')
+        const close = document.createElement('button')
+        close.innerText = 'CLOSE'
+        close.style.display = 'block'
+        close.style.margin = 'auto'
+        close.style.backgroundColor = 'white'
+        screen.appendChild(close)
+        close.addEventListener('click',() =>{
+            screen.style.display = 'none'
+        })
+        
+    }
+    function secondScreen(){
+        const screen = document.getElementById('secondScreen')
+        const points = document.createElement('p')
+        const speed = document.createElement('p')
+        for(const indexPlayer in state.players){
+            screen.replaceChildren()
+            points.innerHTML = `<strong> POINTS:  </strong> ${state.players[indexPlayer].points}`
+            speed.innerHTML = `<strong> SPEED DELAY: </strong> ${state.players[indexPlayer].velocity}`
+            screen.appendChild(points)
+            screen.appendChild(speed)
+
+        }
+        
+        
+
+    }
+    function time(sec){
+        
+        const screen = document.getElementById('thirdScreen')
+        if(sec > 0){
+            
+            screen.replaceChildren()
+            
+            const timeout = document.createElement('p')
+            timeout.innerHTML = `<strong>POWER:</strong> 00:0${sec}`
+            screen.replaceChildren()
+            screen.appendChild(timeout)
+        }
+        else{
+            if(sec == 0){
+                screen.replaceChildren()
+                const timeout = document.createElement('p')
+                timeout.style.fontSize = '1.4em'
+                timeout.innerHTML = '<h1>POWER DISABLE</h1>'
+                screen.appendChild(timeout)
+                return
+            }
+            
+        }
+        
+           
+            
+            
+        
+        
+    }
     function start(){
         setInterval(addIncolor, 8000)
         setInterval(addFruit,500)
@@ -505,18 +564,22 @@ export default function createGame(){
                 if(indexPlayer === currentPlayer){
                     if(player.x === incolor.x && player.y === incolor.y){
                         removeIncolor({incolorID:indexIncolor})
+
                         isTrueIncolor = true
+                        notifyAll({
+                            type: 'incolor-colision'
+                        })
                     }
                 }
                 if(isTrueIncolor){
+                    
                     setTimeout(() => {
+                        
                         isTrueIncolor = false
-                    },5000)
+                    },8000)
                 }
-                
             }
         }
-
     }
     function checkForFruitCollision(currentPlayer){
 
@@ -575,6 +638,9 @@ export default function createGame(){
         
     }
     return {
+        tutorials,
+        secondScreen,
+        time,
         state,
         map,
         start,
@@ -597,4 +663,3 @@ export default function createGame(){
         notifyAll,
     }
 }
-            
