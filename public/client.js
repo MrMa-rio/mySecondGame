@@ -86,6 +86,15 @@ socket.on('win-Points', (command) =>{
     //console.log(command)
     const playerID = command.playerID
     const points = command.points
+    const sound = document.createElement('audio')
+    if(points % 10 == 0){
+        sound.src = './sound/collect-100-green.mp3'
+    }
+    else{
+        sound.src = './sound/collect-sound.mp3'
+    }
+    
+    sound.play()
     game.state.players[playerID].points = points
 })
 socket.on('change-Speed-Player', (command) =>{

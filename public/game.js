@@ -61,7 +61,7 @@ export default function createGame(){
             if(sec == 0){
                 screen.replaceChildren()
                 const timeout = document.createElement('p')
-                timeout.style.fontSize = '1.4em'
+                timeout.style.fontSize = '1.3em'
                 timeout.innerHTML = '<h1>POWER DISABLE</h1>'
                 screen.appendChild(timeout)
                 return
@@ -283,6 +283,7 @@ export default function createGame(){
         console.log(`${currentPlayer} ganhou 1 PONTO!!`)
         playerID.points = playerID.points + 1
         console.log(state.players)
+        
         notifyAll({
             type: 'win-Points',
             playerID: currentPlayer,

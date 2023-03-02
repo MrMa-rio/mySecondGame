@@ -33,7 +33,7 @@ canvas{
 }
 #subtitle{
     width: 330px;
-    height: 480px;
+    height: 420px;
     position: absolute;
     
     top: 5%;
@@ -135,12 +135,16 @@ hr{
 #secondScreen strong{
     color: #000;
 }
+#thirdScreen{
+    transition: all 1s ease-in-out;
+}
 #thirdScreen h1{
     text-align: center;
     padding-top: 6px;
     color: #7c0808d2;
     font-size: 1.8em;
 }
+
 #thirdScreen p{
     color: rgb(14, 73, 14);
     display: block;
