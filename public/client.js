@@ -21,7 +21,6 @@ socket.on('connect', () => {
 
         KeyboardListener.unsubscribe(game.movePlayer);   
     })
-    //console.log(game.map)
 })
 socket.on('state', (state) => {
 
@@ -57,7 +56,6 @@ socket.on('add-Fruit', (command) => {
 })
 socket.on('remove-Fruit', (command) => {
     game.removeFruit(command)
-    //console.log(command)
 })
 socket.on('add-Speed', (command) => {
     game.addSpeed(command)
@@ -69,7 +67,7 @@ socket.on('remove-Speed', (command) =>{
 socket.on('move-Player', (command) => {
 
     const playerID = socket.id
-    if(playerID !== command.playerID){ // Verificação para que o jogador não receba a propria notificação
+    if(playerID !== command.playerID){ 
         
         game.movePlayer(command)
     }
@@ -83,7 +81,7 @@ socket.on('move-Bot', (command) =>{
     botID.distancePlayer = command.distancePlayer
 })
 socket.on('win-Points', (command) =>{
-    //console.log(command)
+    
     const playerID = command.playerID
     const points = command.points
     const sound = document.createElement('audio')

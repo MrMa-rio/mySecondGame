@@ -39,11 +39,7 @@ export default function createGame(){
             speed.innerHTML = `<strong> SPEED DELAY: </strong> ${state.players[indexPlayer].velocity}`
             screen.appendChild(points)
             screen.appendChild(speed)
-
         }
-        
-        
-
     }
     function time(sec){
         
@@ -51,7 +47,6 @@ export default function createGame(){
         if(sec > 0){
             
             screen.replaceChildren()
-            
             const timeout = document.createElement('p')
             timeout.innerHTML = `<strong>POWER:</strong> 00:0${sec}`
             screen.replaceChildren()
@@ -64,6 +59,7 @@ export default function createGame(){
                 timeout.style.fontSize = '1.3em'
                 timeout.innerHTML = '<h1>POWER DISABLE</h1>'
                 screen.appendChild(timeout)
+                isTrueIncolor = false
                 return
             }
             
@@ -116,7 +112,6 @@ export default function createGame(){
                 y: positionY,
                 velocity: velocity,
                 points: points
-            
             }
             addBot()
             notifyAll({
@@ -146,7 +141,6 @@ export default function createGame(){
             const positionY = command ? command.positionY : Math.floor(Math.random() * state.screen.height)
             const distancePlayer = command ? command.distancePlayer : state.screen.width + state.screen.height
             
-            
             state.bots[botID] = {
                 x: positionX,
                 y: positionY,
@@ -167,15 +161,11 @@ export default function createGame(){
         for(const indexBot in state.bots){
             
             delete state.bots[indexBot]
-
             notifyAll({
                 type: 'remove-Bot',
                 botID: indexBot
             })
         }
-        
-        
-        
     }
     function addFruit(command){
         if(Object.keys(state.fruits).length < 3){
@@ -217,7 +207,6 @@ export default function createGame(){
                 x: positionX,
                 y: positionY,
             }
-        
             notifyAll({
                 type: 'add-Incolor',
                 incolorID: incolorID,
@@ -233,8 +222,7 @@ export default function createGame(){
             notifyAll({
                 type: 'remove-Incolor',
                 incolorID: command.incolorID
-            }) 
-            
+            })   
         }
     }
     function addSpeed(command){
@@ -244,12 +232,10 @@ export default function createGame(){
             const positionY = command ? command.positionY : Math.floor(Math.random() * state.screen.height)
 
             state.speedsPlayer[speedID] = {
-
                 speedID: speedID,
                 x: positionX,
                 y: positionY,
             }
-
             notifyAll({
                 type: 'add-Speed',
                 speedID: speedID,
@@ -307,7 +293,6 @@ export default function createGame(){
     function movePlayer(command){
         notifyAll(command)
         
-
         const acceptMoves = {
 
             ArrowUp(player,validation){
@@ -321,7 +306,6 @@ export default function createGame(){
                         player.y = player.y + (state.screen.height - 1)
                     }
                 }
-                
             },
             ArrowDown(player, validation){
 
@@ -333,7 +317,6 @@ export default function createGame(){
                         player.y = 0
                     }
                 }
-                
             },
             ArrowLeft(player, validation){
 
@@ -345,11 +328,9 @@ export default function createGame(){
                         player.x = player.x + (state.screen.width - 1)
                     }
                 }
-                
             },
             ArrowRight(player, validation){
                 if(validation){
-
                     if(player.x + 1 < state.screen.width){
                         player.x = player.x + 1
                     }
@@ -357,18 +338,14 @@ export default function createGame(){
                         player.x = 0
                     }
                 }
-                
             },
             q(player){
                 if(!isTrueIncolor){
                     if(player.y > 0 && player.x > 0){
-                    player.y = player.y - 1
-                    player.x = player.x - 1
-                    
+                        player.y = player.y - 1
+                        player.x = player.x - 1
+                    }
                 }
-                }
-                
-                
             },
             w(player,validation){
                 
@@ -381,7 +358,6 @@ export default function createGame(){
                         player.y = player.y + (state.screen.height - 1)
                     }
                 }
-                
             },
             e(player,validation){
                 if(!validation){
@@ -452,7 +428,6 @@ export default function createGame(){
             
             setTimeout(() => {
                 moveFunction(player,isTrueIncolor)
-                checkPositionColor(playerID)
                 checkForIncolorColision(playerID)
                 checkForFruitCollision(playerID)
                 checkForSpeedCollision(playerID)
@@ -470,13 +445,10 @@ export default function createGame(){
             for(const indexPlayer in state.players){
                 
                 const playerID = state.players[indexPlayer]
-                
                 checkForBotCollision(playerID,indexPlayer, botID)
-
                 distancePlayer = (botID.x - playerID.x) + (botID.y - playerID.y)
                 
                 if(distancePlayer < 0){
-                    
                     distancePlayer = distancePlayer - distancePlayer - distancePlayer //convertendo valores negativos para positivos
                 }
                 
@@ -493,25 +465,23 @@ export default function createGame(){
                     distanceX = (playerID.x - botID.x)
                     distanceY = (playerID.y - botID.y)
                     distancePlayer = botID.distancePlayer
-
                 }
-                
                 if(distancePlayer == botID.distancePlayer){
                     
                     botID.distancePlayer = distancePlayer
                     
-                        if(botID.y < playerID.y){
-                            botID.y++
-                        }
-                        if(botID.x > playerID.x){
-                            botID.x--
-                        }
-                        if(botID.y > playerID.y){
-                            botID.y--
-                        }
-                        if(botID.x < playerID.x){
-                            botID.x++
-                        }
+                    if(botID.y < playerID.y){
+                        botID.y++
+                    }
+                    if(botID.x > playerID.x){
+                        botID.x--
+                    }
+                    if(botID.y > playerID.y){
+                        botID.y--
+                    }
+                    if(botID.x < playerID.x){
+                        botID.x++
+                    }
                     
                     distancePlayer = botID.distancePlayer
                 }
@@ -526,33 +496,6 @@ export default function createGame(){
                 })
             }
         }
-    }
-    function checkPositionColor(currentPlayer){
-
-        for(const positionB in map.black){
-            const posBlack = map.black[positionB]
-            for(const playerID in state.players){
-                if(currentPlayer == playerID){
-                    const player = state.players[playerID]
-                if(player.x === posBlack.x && player.y === posBlack.y){
-                    //console.log('area Black')
-                    return
-                }
-                }
-                
-            }
-        }
-        for(const positionW in map.white){
-            const posWhite = map.white[positionW]
-            for(const playerID in state.players){
-                const player = state.players[playerID]
-                if(player.x === posWhite.x && player.y === posWhite.y){
-                    //console.log('area White')
-                    return
-                }
-            }
-        }
-        
     }
     function checkForIncolorColision(currentPlayer){
 
@@ -579,6 +522,7 @@ export default function createGame(){
                         isTrueIncolor = false
                     },8000)
                 }
+                
             }
         }
     }

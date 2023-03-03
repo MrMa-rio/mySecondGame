@@ -31,6 +31,7 @@ canvas{
     image-rendering: -moz-crisp-edges;
     
 }
+
 #subtitle{
     width: 330px;
     height: 420px;
@@ -70,7 +71,7 @@ hr{
 #tutorials{
     width: 460px;
     height: 480px;
-    position: absolute;
+    position: fixed;
     
     top: 5%;
     left: 38%;

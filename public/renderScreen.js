@@ -20,12 +20,10 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
                 game.map.white[num++] = { x: r, y: c}
                 
             }
-          
         }
     }
     for(const players in game.state.players){
 
-        
         let player = game.state.players[players]
         if(players == playerID){
             context.fillStyle = '#000'
@@ -34,9 +32,7 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
         else{
             context.fillStyle = '#62656C'
             context.fillRect(player.x,player.y,1,1)
-
         }
-        
     }
     for(const bots in game.state.bots){
 
@@ -61,11 +57,9 @@ export default function renderScreen(screen,game,renderScreen, requestAnimationF
         context.fillStyle = '#3B3561'
         context.fillRect(speedID.x, speedID.y, 1, 1)
     }
-    
     game.secondScreen()
     requestAnimationFrame(() => {
 
         renderScreen(screen,game,renderScreen,requestAnimationFrame,playerID)
-
     })
 }
